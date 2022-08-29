@@ -2,6 +2,7 @@ package lu.atozdigital.api.controller;
 
 import lu.atozdigital.api.dto.ProductDTO;
 import lu.atozdigital.api.exception.application.ResourceNotFoundException;
+import lu.atozdigital.api.service.FileService;
 import lu.atozdigital.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * ProductController Class Controller handle CRUD for PRODUCT
@@ -27,7 +29,11 @@ public class ArticleController {
      */
     @Autowired
     ProductService productService;
-
+    /**
+     * fileService a Service contain methode to save images of products
+     */
+    @Autowired
+    FileService fileService;
     /**
      * Get All product saved in database
      * @return Response Entity contain List of Products
@@ -105,6 +111,17 @@ public class ArticleController {
     @PostMapping(value="/saveImage", consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
     ResponseEntity<?> saveImageProduct(@RequestParam(required = true,name = "id")Long id,@RequestPart(value = "image",required = false) MultipartFile image) throws Exception {
         return new ResponseEntity<>(this.productService.saveImage(id,image), HttpStatus.ACCEPTED);
+    }
+    /**
+     * Get image from server directive
+     *
+     * @param imageUrl String contain path of image in server
+     * @return Byte Array contain image
+     * @throws IOException if image not found in the path
+     */
+    @GetMapping(value = "/image/{urlImage}")
+    ResponseEntity<?> getImageEngin(@PathVariable("urlImage") String imageUrl) throws IOException {
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(fileService.getImage(imageUrl));
     }
 
 }
