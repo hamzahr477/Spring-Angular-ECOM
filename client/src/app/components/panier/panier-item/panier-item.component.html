@@ -1,0 +1,17 @@
+<div class="row border-top border-bottom">
+  <div class="row main align-items-center">
+    <div class="col-2"><img height="60" [src]="product?.urlImg!=null ?host!+product?.urlImg: '/assets/default.jpeg'" ></div>
+    <div class="col d-flex align-items-center">
+      <div class="row text-muted">{{product?.name}}</div>
+    </div>
+    <div class="col d-flex align-items-center">
+      <mat-button-toggle (click)="sub()"  value="red">-</mat-button-toggle>
+      <a class="border">{{quantity}}</a>
+      <mat-button-toggle (click)="add()"  value="red">+</mat-button-toggle>
+    </div>
+    <div class="col d-flex align-items-center">{{quantity!*product?.price! | number : '1.2-2'}} DH <button (click)="this.cartService.removeFromCart(this.product?.id!)" class="close"  mat-icon-button color="warn" aria-label="Example icon button with a home icon">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+</div>

@@ -1,0 +1,43 @@
+*{
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+ td {
+  text-align: center;
+  padding: 8px;
+}
+
+ td {
+  border-right: 1px solid #f8f8f8;
+  font-size: 12px;
+}
+
+@media (max-width: 767px) {
+
+
+   td{
+    padding: 20px .625em .625em .625em;
+    height: 90px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 120px;
+    font-size: 13px;
+    text-overflow: ellipsis;
+  }
+
+   td:nth-child(odd) {
+    background: #F8F8F8;
+    border-right: 1px solid #E6E4E4;
+  }
+  td:nth-child(even) {
+    border-right: 1px solid #E6E4E4;
+  }
+   td {
+    display: block;
+    text-align: center;
+  }
+}

@@ -1,0 +1,87 @@
+<div class="p-4">
+  <div class="card">
+    <div class="row">
+      <div class="col-md-8 cart">
+        <div class="title">
+          <div class="row">
+            <div class="col"><h4><b>Shopping Cart</b></h4></div>
+            <div class="col align-self-center text-right text-muted">{{cartService.items.length}} item{{cartService.items.length>1?"s":""}}</div>
+          </div>
+        </div>
+        <ng-container *ngIf="loading">
+          {{loading }} {{cartService.items.length}}
+          <div class="p-4 d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="error">
+          <div class="p-4 col-sm-12 d-flex justify-content-center">
+            <ngb-alert [dismissible]="false" type="danger" >
+              Erreur de charger les données.
+              Merci de résseyer plus tard
+              <button (click)="getData()" class="btn-success  ml-3"> Resseyer</button>
+            </ngb-alert>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="this.cartService.items?.length == 0">
+          <div class="p-4 col-sm-12 d-flex justify-content-center">
+            <div class="row text-secondary">Cart empty</div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <button class="nav-link" routerLink="/products"  mat-raised-button color="accent">Go Shop</button>
+          </div>
+        </ng-container>
+        <ng-container *ngFor=" let item of this.cartService.items">
+          <app-panier-item [product]="item?.product" [quantity]="item?.quantity!"></app-panier-item>
+        </ng-container>
+      </div>
+      <div class="col-md-4 summary">
+        <div><h5><b>Summary</b></h5></div>
+        <hr>
+        <div class="col">
+          <ng-container *ngIf="this.cartService?.items?.length == 0">
+            <div class="col-sm-12 d-flex justify-content-center">
+              <div class="row text-secondary">No item found</div>
+            </div>
+          </ng-container>
+          <ng-container *ngFor="let item of this.cartService?.items!">
+            <div class="row">
+              <div class="col" style="padding-left:0;">{{item?.product?.name}}</div>
+              <div class="col text-right">{{item?.product?.price! * item?.quantity! | number : '1.2-2'}} DH</div>
+            </div>
+            <hr>
+          </ng-container>
+        </div>
+        <form [formGroup]="orderForm!" autocomplete="off" novalidate (ngSubmit)="checkout(orderForm!.value)" id="orderForm">
+          <div class="col pb-2">PAYEMENT METHOD</div>
+          <mat-form-field  class="example-full-width" appearance="fill">
+            <mat-label>Payement method</mat-label>
+            <mat-select  formControlName="payementMethod">
+              <mat-option *ngFor="let payementMethod of payementMethods" [value]="payementMethod.value">
+                {{payementMethod.viewValue}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('payementMethod', 'required')">Payment method is required</mat-error>
+          </mat-form-field>
+        </form>
+        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+          <div class="col">TOTAL PRICE</div>
+          <div class="col text-right">{{getTotal() | number : '1.2-2'}} DH</div>
+        </div>
+        <hr>
+        <button form="orderForm" [type]="'submit'"  class="example-full-width" [disabled]="this.cartService.items.length == 0 || this.checkOutLoading"  mat-raised-button color="accent">
+          <div *ngIf="checkOutLoading" class="spinner-wrapper">
+            <span class="pr-2">please wait </span>
+            <mat-spinner [diameter]="20"></mat-spinner>
+          </div>
+          <div *ngIf="!checkOutLoading" >
+            CHECKOUT
+          </div>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

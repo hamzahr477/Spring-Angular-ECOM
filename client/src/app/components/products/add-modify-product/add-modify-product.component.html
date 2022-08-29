@@ -1,0 +1,49 @@
+<h2 mat-dialog-title> {{this.product_?.id !== null ? "Modify Product" : "Add product"}}</h2>
+<mat-dialog-content class="mat-typography">
+  <form  [formGroup]="productForm!" autocomplete="off" novalidate (ngSubmit)="createProduct(productForm!.value)" id="productForm">
+    <div style="position: relative" class="form-group col-12 container">
+      <div class="col p-2">
+        <div class="col p-0 d-flex justify-content-center" style="background: lightgray; height:250px">
+          <label role="button" for="upload">
+            <div  class="bg-secondary btn m-0 border-0" style="position: absolute; right: 0px; top: 0%; opacity: 0.8;"><i class="fa fa-lg fa-edit"></i></div>                  </label>
+          <img [src]="imgSrc || (product_?.urlImg!=null ?host!+product_?.urlImg: '/assets/default.jpeg')" >
+        </div>
+      </div>
+      <input #imgEdit (change)="onImageChange($event)" id="upload" type="file" name="image" style="display: none" accept="image/png, image/gif, image/jpeg">
+    </div>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Product name</mat-label>
+      <mat-error *ngIf="hasError('name', 'required')">Name is required</mat-error>
+      <input matInput formControlName="name">
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Price</mat-label>
+      <input matInput formControlName="price" [min]="0" [type]="'number'">
+      <mat-error *ngIf="hasError('price', 'required')">Price is required</mat-error>
+      <mat-error *ngIf="hasError('price', 'min')">Price should by not less than 0</mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description">
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Quantity</mat-label>
+      <input matInput [type]="'number'" step="1" [min]="0" formControlName="quantity">
+      <mat-error *ngIf="hasError('quantity', 'required')">Quantity is required</mat-error>
+      <mat-error *ngIf="hasError('quantity', 'min')">Quantity should by not less than 0</mat-error>
+      <mat-error *ngIf="hasError('quantity', 'pattern')">Quantity should by entier number</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-raised-button mat-button mat-dialog-close>Close</button>
+    <button form="productForm" [type]="'submit'" mat-raised-button color="primary" [disabled]="!productForm!.valid && loading">
+      <div *ngIf="!loading">
+        {{this.product_?.id !== null ? "Modify" : "Add"}}
+      </div>
+      <div *ngIf="loading" class="spinner-wrapper">
+        <span class="pr-2">please wait </span>
+        <mat-spinner [diameter]="20"></mat-spinner>
+      </div>
+    </button>
+</mat-dialog-actions>

@@ -1,0 +1,7 @@
+<td>{{order?.numOrder!}}</td>
+<td>{{payementMethodLable()}}</td>
+<td>{{order?.total! | number : '1.2-2'}} DH</td>
+<td>{{order?.orderDate! | date:'short'}}</td>
+<td><button (click)="view()" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+  <mat-icon>more_vert</mat-icon>
+</button></td>

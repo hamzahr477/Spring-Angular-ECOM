@@ -1,0 +1,53 @@
+<div class=" m-3 table-wrapper">
+  <table class="fl-table">
+    <thead class="bg-info">
+    <tr>
+      <th>Order code</th>
+      <th>Payement Method</th>
+      <th>Total</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="orders$ | async as res" [ngSwitch]="res.dataState">
+      <ng-container *ngSwitchCase="'LOADING'">
+        <tr >
+          <td colspan="100%">
+        <div class="p-4 d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+          </td></tr>
+      </ng-container>
+      <ng-container *ngSwitchCase="'ERROR'">
+        <tr >
+          <td colspan="100%">
+        <div class="p-4 col-sm-12 d-flex justify-content-center">
+          <ngb-alert [dismissible]="false" type="danger" >
+            Erreur de charger les données.
+            Merci de résseyer plus tard
+            <button (click)="getData()" class="btn-success  ml-3"> Resseyer</button>
+          </ngb-alert>
+        </div>
+          </td></tr>
+      </ng-container>
+      <ng-container *ngSwitchCase="'LOADED'">
+        <ng-container *ngIf="res?.data?.length==0">
+          <tr >
+            <td colspan="100%">
+              <div class="col p-4 d-flex justify-content-center">
+                No Order found
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngFor="let order of res.data">
+          <tr app-order-item [order]="order">   </tr>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+    </tbody>
+  </table>
+</div>

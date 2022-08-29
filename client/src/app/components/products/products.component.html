@@ -1,0 +1,42 @@
+    <ng-container *ngIf="products$ | async as res" [ngSwitch]="res.dataState">
+      <ng-container *ngSwitchCase="'LOADING'">
+        <div class="p-4 d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'ERROR'">
+        <div class="p-4 col-sm-12 d-flex justify-content-center">
+          <ngb-alert [dismissible]="false" type="danger" >
+            Erreur de charger les données.
+            Merci de résseyer plus tard
+            <button (click)="getData()" class="btn-success  ml-3"> Resseyer</button>
+          </ngb-alert>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'LOADED'">
+        <div class="row col-12">
+          <ng-container *ngIf="res.totalElements==0">
+            <div class="col p-4 d-flex justify-content-center">
+              No product found
+            </div>
+          </ng-container>
+          <ng-container *ngFor="let product of res.data">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+              <app-product [product]="product"></app-product>
+            </div>
+          </ng-container>
+        </div>
+        <hr>
+        <br>
+        <div class="horizontal-scroll"><ngb-pagination  class="d-flex justify-content-center" (pageChange)="onPageChange($event)" [collectionSize]="res.totalElements!" [page]="offset" [maxSize]="5" [pageSize]="pageSize"  [rotate]="true" [boundaryLinks]="true"></ngb-pagination></div>
+      </ng-container>
+    </ng-container>
+<div class="fab-container">
+  <button (click)="openDialog()" mat-fab class="fab-toggler">
+    <i class="material-icons">add</i>
+  </button>
+</div>
+
+

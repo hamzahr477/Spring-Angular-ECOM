@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>Order</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="col pb-2">Items</div>
+  <ng-container *ngFor="let item of this.newOrder?.productCommandeList!">
+    <div class="row border-top border-bottom">
+      <div class="row col main align-items-center">
+        <div class="col-2"><img height="60" [src]="item?.product?.urlImg!=null ?host!+item?.product?.urlImg: '/assets/default.jpeg'" ></div>
+        <div class="col">
+          <div class="row text-muted">{{item?.product?.name}}</div>
+        </div>
+        <div class="col d-flex align-items-center">
+          <mat-button-toggle (click)="sub(item)"  value="red">-</mat-button-toggle>
+          <a class="border">{{item?.quantity}}</a>
+          <mat-button-toggle (click)="add(item)"  value="red">+</mat-button-toggle>
+        </div>
+        <div class="col d-flex align-items-center">{{item?.quantity!*item?.product?.price! | number : '1.2-2'}} DH <button (click)="remove(item)" class="close"  mat-icon-button color="warn" aria-label="Example icon button with a home icon">
+          <mat-icon>close</mat-icon>
+        </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="col pt-3">PAYEMENT METHOD</div>
+  <form [formGroup]="orderForm!" autocomplete="off" novalidate (ngSubmit)="save(orderForm!.value)" id="orderForm">
+    <mat-form-field  class="example-full-width" appearance="fill">
+      <mat-label>Payement method</mat-label>
+      <mat-select (ngModelChange)="this.isChanged = true"  formControlName="payementMethod">
+        <mat-option *ngFor="let payementMethod of payementMethods" [value]="payementMethod.value">
+          {{payementMethod.viewValue}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="hasError('payementMethod', 'required')">Payment method is required</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-button mat-dialog-close>Close</button>
+  <button form="orderForm" [type]="'submit'" mat-raised-button color="primary" [disabled]="!isChanged || loading">
+    <div *ngIf="!loading">
+      Save
+    </div>
+    <div *ngIf="loading" class="spinner-wrapper">
+      <span class="pr-2">please wait </span>
+      <mat-spinner [diameter]="20"></mat-spinner>
+    </div>
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,38 @@
+<div class="container page-wrapper">
+  <div class="page-inner">
+    <div class="row">
+      <div class="el-wrapper">
+        <div class="box-up">
+          <img class="img" height="200" [src]="host!+this.product?.urlImg" >
+          <div class="img-info">
+            <div class="info-inner">
+              <span class="p-name">{{this.product?.name}}</span>
+              <span [ngClass]="{'text-danger' : this.product?.quantity==0 ,'text-success':this.product?.quantity! > 0}" class="p-company">Quantity : {{this.product?.quantity}}</span>
+            </div>
+            <div class="a-size">
+              {{this.product?.description}}
+              <div class="pt-3">
+                <button (click)="edit()" mat-flat-button color="accent">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-down">
+          <div class="h-bg">
+            <div class="h-bg-inner"></div>
+          </div>
+          <a class="cart" href="javascript:" (click)="addToCart()" >
+            <span class="price">{{this.product?.price | number : '1.2-2'}} DH</span>
+            <span class="add-to-cart">
+              <span class="txt">Add in cart</span>
+            </span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
