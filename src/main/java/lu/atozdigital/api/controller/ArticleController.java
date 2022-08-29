@@ -53,4 +53,15 @@ public class ArticleController {
     ResponseEntity<?> saveProduct( @RequestBody @Valid ProductDTO product){
         return new ResponseEntity<>(productService.saveProduct(product),HttpStatus.CREATED);
     }
+    /**
+     * Edit product already exist in database
+     * @param product a Object of ProductDTO contain informations of product
+     * @return Response Entity contain product after edited
+     * @throws ResourceNotFoundException if cannot find the product
+     */
+    @PutMapping("")
+    ResponseEntity<?> editProduct( @RequestBody @Valid ProductDTO product) throws ResourceNotFoundException {
+        return new ResponseEntity<>(productService.editProduct(product),HttpStatus.ACCEPTED);
+    }
+
 }
