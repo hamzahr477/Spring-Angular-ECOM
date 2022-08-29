@@ -1,14 +1,12 @@
 package lu.atozdigital.api.controller;
 
+import lu.atozdigital.api.exception.application.ResourceNotFoundException;
 import lu.atozdigital.api.service.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * This is commandes controller, handle CRUD of commande
@@ -33,5 +31,15 @@ public class OrderController {
     @GetMapping("")
     public ResponseEntity<?> getAllOrder(){
         return new ResponseEntity<>(commandeService.getAllCommandes(), HttpStatus.OK);
+    }
+    /**
+     * Get order by Id from Database
+     * @param id a Long contain id of Order
+     * @return a Response Entity contain the Order looking for
+     * @throws ResourceNotFoundException if not exist order with that id
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrder(@PathVariable("id") Long id) throws ResourceNotFoundException {
+        return new ResponseEntity<>(commandeService.getCommande(id),HttpStatus.OK);
     }
 }
