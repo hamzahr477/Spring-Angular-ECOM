@@ -63,5 +63,16 @@ public class ArticleController {
     ResponseEntity<?> editProduct( @RequestBody @Valid ProductDTO product) throws ResourceNotFoundException {
         return new ResponseEntity<>(productService.editProduct(product),HttpStatus.ACCEPTED);
     }
+    /**
+     * Remove product from database
+     * @param id a Long contain id of product
+     * @return Response Entity
+     * @throws ResourceNotFoundException if cannot find the product with that id
+     */
+    @DeleteMapping("")
+    ResponseEntity<?> deleteProduct(@RequestParam(name = "id" ,required = true) Long id ) throws ResourceNotFoundException {
+        productService.deletProduct(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
 
 }
