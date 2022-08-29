@@ -74,5 +74,22 @@ public class ArticleController {
         productService.deletProduct(id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+    /**
+     * Research for products with specific parameters and return them with pagination
+     * @param offset integer contain number of current page
+     * @param pageSize integer contain number of item in page
+     * @param sortField string contain the field of product that sorting will apply
+     * @param sortType string ('desc';'asc') contain direction of sorting the products
+     * @param name string contain a search word
+     * @return Response Entity contain pagination of products
+     */
+    @GetMapping("/search")
+    ResponseEntity<?> searchAllProduct(@RequestParam(required = false,name="offset",defaultValue = "0") int offset,
+                                       @RequestParam(required = false,name="pageSize", defaultValue = "10") int pageSize,
+                                       @RequestParam(required = false,name="sortField", defaultValue ="id") String sortField,
+                                       @RequestParam(required = false,name="sortType", defaultValue ="DESC") String sortType,
+                                       @RequestParam(required = false,name="search" , defaultValue ="") String name){
+        return new ResponseEntity<>(productService.search(sortField,offset,pageSize,sortType,name), HttpStatus.OK);
+    }
 
 }
