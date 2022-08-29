@@ -1,12 +1,16 @@
 package lu.atozdigital.api.controller;
 
+import lu.atozdigital.api.dto.CommandeDTO;
 import lu.atozdigital.api.exception.application.ResourceNotFoundException;
+import lu.atozdigital.api.exception.business.QuantityInsufficientException;
 import lu.atozdigital.api.service.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * This is commandes controller, handle CRUD of commande
@@ -41,5 +45,16 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getOrder(@PathVariable("id") Long id) throws ResourceNotFoundException {
         return new ResponseEntity<>(commandeService.getCommande(id),HttpStatus.OK);
+    }
+    /**
+     * Save order in Database
+     * @param commande object of CommandeDTO contain informations of order
+     * @return a Response Entity contain the Order saved
+     * @throws ResourceNotFoundException if order contain product that not exist in database
+     * @throws QuantityInsufficientException if Quantity of order great than quantity of Product
+     */
+    @PostMapping("")
+    public ResponseEntity<?> saveOrder(@RequestBody @Valid CommandeDTO commande) throws ResourceNotFoundException, QuantityInsufficientException {
+        return new ResponseEntity<>(commandeService.saveCommande(commande),HttpStatus.CREATED);
     }
 }
