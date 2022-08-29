@@ -71,4 +71,16 @@ public class OrderController {
     public ResponseEntity<?> editOrder(@RequestBody @Valid CommandeDTO commande) throws ResourceNotFoundException, QuantityInsufficientException, EmptyOrderException {
         return new ResponseEntity<>(commandeService.editCommande(commande),HttpStatus.ACCEPTED);
     }
+    /**
+     * Remove Order from database
+     *
+     * @param id a Long contain id of Order
+     * @return a Response Entity
+     * @throws ResourceNotFoundException if not exist any Order with that id
+     */
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteOrder(@RequestParam(required = true) Long id) throws ResourceNotFoundException {
+        commandeService.deleteCommande(id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
 }
