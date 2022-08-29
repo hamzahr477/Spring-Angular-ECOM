@@ -2,6 +2,7 @@ package lu.atozdigital.api.controller;
 
 import lu.atozdigital.api.dto.CommandeDTO;
 import lu.atozdigital.api.exception.application.ResourceNotFoundException;
+import lu.atozdigital.api.exception.business.EmptyOrderException;
 import lu.atozdigital.api.exception.business.QuantityInsufficientException;
 import lu.atozdigital.api.service.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,18 @@ public class OrderController {
     @PostMapping("")
     public ResponseEntity<?> saveOrder(@RequestBody @Valid CommandeDTO commande) throws ResourceNotFoundException, QuantityInsufficientException {
         return new ResponseEntity<>(commandeService.saveCommande(commande),HttpStatus.CREATED);
+    }
+
+    /**
+     * Edit Order that already saved
+     * @param commande object of CommandeDTO which will edit
+     * @return a Response Entity contain the Order edited
+     * @throws ResourceNotFoundException order contain product that not exist in database
+     * @throws QuantityInsufficientException if Quantity of order great than quantity of Product
+     * @throws EmptyOrderException if Order contain no product
+     */
+    @PutMapping("")
+    public ResponseEntity<?> editOrder(@RequestBody @Valid CommandeDTO commande) throws ResourceNotFoundException, QuantityInsufficientException, EmptyOrderException {
+        return new ResponseEntity<>(commandeService.editCommande(commande),HttpStatus.ACCEPTED);
     }
 }
