@@ -1,14 +1,12 @@
 package lu.atozdigital.api.controller;
 
+import lu.atozdigital.api.exception.application.ResourceNotFoundException;
 import lu.atozdigital.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * ProductController Class Controller handle CRUD for PRODUCT
@@ -33,4 +31,15 @@ public class ArticleController {
     ResponseEntity<?> getAllProduct(){
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
+    /**
+     * Get product by Id
+     * @param id a Long contain id of product looking for
+     * @return Response Entity contain the Product
+     * @throws ResourceNotFoundException if no product exist with that id
+     */
+    @GetMapping("/{id}")
+    ResponseEntity<?> getProductById(@PathVariable("id") Long id) throws ResourceNotFoundException {
+        return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
+    }
+    
 }
