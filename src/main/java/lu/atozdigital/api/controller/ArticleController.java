@@ -5,9 +5,11 @@ import lu.atozdigital.api.exception.application.ResourceNotFoundException;
 import lu.atozdigital.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -90,6 +92,19 @@ public class ArticleController {
                                        @RequestParam(required = false,name="sortType", defaultValue ="DESC") String sortType,
                                        @RequestParam(required = false,name="search" , defaultValue ="") String name){
         return new ResponseEntity<>(productService.search(sortField,offset,pageSize,sortType,name), HttpStatus.OK);
+    }
+
+    /**
+     * Save image of product
+     *
+     * @param id a Long contain id of product
+     * @param image a multipart file contain image of product
+     * @return Product after save new image
+     * @throws Exception
+     */
+    @PostMapping(value="/saveImage", consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
+    ResponseEntity<?> saveImageProduct(@RequestParam(required = true,name = "id")Long id,@RequestPart(value = "image",required = false) MultipartFile image) throws Exception {
+        return new ResponseEntity<>(this.productService.saveImage(id,image), HttpStatus.ACCEPTED);
     }
 
 }
