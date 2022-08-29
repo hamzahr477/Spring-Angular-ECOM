@@ -1,5 +1,6 @@
 package lu.atozdigital.api.controller;
 
+import lu.atozdigital.api.dto.ProductDTO;
 import lu.atozdigital.api.exception.application.ResourceNotFoundException;
 import lu.atozdigital.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * ProductController Class Controller handle CRUD for PRODUCT
@@ -41,5 +44,13 @@ public class ArticleController {
     ResponseEntity<?> getProductById(@PathVariable("id") Long id) throws ResourceNotFoundException {
         return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
     }
-    
+    /**
+     * Save a new Product in database
+     * @param product a Object of ProductDTO contain informations of product
+     * @return Response Entity contain new product saved
+     */
+    @PostMapping("")
+    ResponseEntity<?> saveProduct( @RequestBody @Valid ProductDTO product){
+        return new ResponseEntity<>(productService.saveProduct(product),HttpStatus.CREATED);
+    }
 }
