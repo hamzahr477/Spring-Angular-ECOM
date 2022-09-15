@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  host : "http://localhost:8080",
+  mockable : "http://demo3004949.mockable.io"
 };
 
 /*
